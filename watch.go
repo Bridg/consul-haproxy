@@ -14,7 +14,6 @@ import (
 	"sync"
 	"text/template"
 	"time"
-  "strings"
 
 	"github.com/armon/consul-api"
 )
@@ -323,7 +322,7 @@ func formatOutput(inp map[string][]*consulapi.ServiceEntry) map[string][]string 
 	for backend, entries := range inp {
 		servers := make([]string, len(entries))
 		for idx, entry := range entries {
-			name := fmt.Sprintf("%s_%s_%s", entry.Node.Node, entry.Service.ID, strings.Join(append(entry.Service.Tags), "~"))
+			name := fmt.Sprintf("%s_%s_%s", entry.Node.Node, entry.Service.ID, entry.Service.Tags)
 			ip := net.ParseIP(entry.Node.Address)
 			addr := &net.TCPAddr{IP: ip, Port: entry.Service.Port}
 			servers[idx] = fmt.Sprintf("server %s %s", name, addr)
